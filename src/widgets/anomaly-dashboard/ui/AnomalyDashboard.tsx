@@ -43,10 +43,45 @@ export const AnomalyDashboard = () => {
     );
   }
 
+  const allCaptured = anomalies.every(
+    (anomaly) => anomaly.status === 'captured'
+  );
+
+  const handleReset = async () => {
+    try {
+      // Call the reset API to reset all yokai to active state
+      const response = await fetch('/api/reset', {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        // If successful, refresh the data by updating the query cache
+        // This should trigger a refresh of the anomalies data
+        window.location.reload(); // Fallback to reload after API call
+      } else {
+        console.error('Failed to reset yokai');
+      }
+    } catch (error) {
+      console.error('Error calling reset API:', error);
+    }
+  };
+
   return (
     <div className={styles.dashboard}>
       <h1 className={styles.title}>Yōkai Threat Matrix</h1>
       <p className={styles.subtitle}>Real-time spiritual anomaly monitoring</p>
+
+      {allCaptured && (
+        <div className={styles.resetContainer}>
+          <h2 className={styles.congratulations}>All Yokai Captured!</h2>
+          <p className={styles.message}>
+            Congratulations, you have captured all the yokai!
+          </p>
+          <button className={styles.resetButton} onClick={handleReset}>
+            Reset Game
+          </button>
+        </div>
+      )}
 
       <div className={styles.grid}>
         {anomalies.map((anomaly: Anomaly) => (

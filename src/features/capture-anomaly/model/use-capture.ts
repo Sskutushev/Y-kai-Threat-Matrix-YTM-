@@ -39,7 +39,9 @@ export const useCaptureMutation = () => {
       await queryClient.cancelQueries({ queryKey: ['anomalies'] });
 
       // 2. Snapshot previous data
-      const previousAnomalies = queryClient.getQueryData<Anomaly[]>(['anomalies']);
+      const previousAnomalies = queryClient.getQueryData<Anomaly[]>([
+        'anomalies',
+      ]);
 
       // 3. Optimistic update
       queryClient.setQueryData<Anomaly[]>(['anomalies'], (old) => {
@@ -54,7 +56,8 @@ export const useCaptureMutation = () => {
       // Return context for rollback
       return { previousAnomalies };
     },
-    onError: (err, { id: _id }, context) => { // Renamed 'id' to '_id'
+    onError: (err, { id: _id }, context) => {
+      // Renamed 'id' to '_id'
       // 1. Rollback to previous data
       if (context?.previousAnomalies) {
         queryClient.setQueryData(['anomalies'], context.previousAnomalies);
@@ -64,9 +67,14 @@ export const useCaptureMutation = () => {
       let errorMessage = 'Failed to capture the yokai';
 
       if (err instanceof Error) {
-        const typedError = err as Error & { status?: number; data?: unknown; name?: string };
+        const typedError = err as Error & {
+          status?: number;
+          data?: unknown;
+          name?: string;
+        };
         if (typedError.name === 'ApiError') {
-          errorMessage = typedError.data?.message || typedError.message;
+          const apiData = typedError.data as { message?: string } | undefined;
+          errorMessage = apiData?.message || typedError.message;
         } else {
           errorMessage = typedError.message;
         }

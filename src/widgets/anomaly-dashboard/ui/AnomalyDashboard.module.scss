@@ -37,8 +37,68 @@
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: $spacing-lg;
+    grid-template-columns: repeat(1, 1fr); // 1 column on mobile (320px and up)
+    gap: $spacing-md;
     width: 100%;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr); // 2 columns on tablet
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr); // 3 columns on desktop
+    }
+  }
+
+  .resetContainer {
+    text-align: center;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-lg;
+    background: rgba($color-bg-tertiary, 0.5);
+    border-radius: $border-radius-lg;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .congratulations {
+      font-size: $font-size-2xl;
+      color: $color-success;
+      margin-bottom: $spacing-md;
+    }
+
+    .message {
+      font-size: $font-size-lg;
+      color: $color-text-secondary;
+      margin-bottom: $spacing-lg;
+    }
+
+    .resetButton {
+      background: $color-primary;
+      color: white;
+      border: none;
+      padding: $spacing-md $spacing-xl;
+      font-size: $font-size-base;
+      font-weight: 600;
+      border-radius: $border-radius-lg;
+      cursor: pointer;
+      transition: background $transition-base;
+      -webkit-appearance: none; // Remove default appearance in Safari
+      -moz-appearance: none; // Remove default appearance in Firefox
+      appearance: none; // Remove default appearance in modern browsers
+      outline: none; // Remove default focus outline
+      text-align: center;
+
+      &:hover {
+        background: lighten($color-primary, 10%);
+      }
+
+      &:focus {
+        outline: 2px solid $color-secondary;
+        outline-offset: 2px;
+      }
+
+      &:active {
+        transform: scale(0.98);
+        background: darken($color-primary, 10%);
+      }
+    }
   }
 }

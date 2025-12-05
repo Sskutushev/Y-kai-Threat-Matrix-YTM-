@@ -7,10 +7,10 @@ const CaptureRequestSchema = z.object({
   id: z.string().min(1, 'Anomaly ID is required'),
 });
 
-export async function POST(_request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     // Parse and validate the request body
     const body = await request.json();
@@ -19,18 +19,15 @@ export async function POST(_request: NextRequest) {
     // Check if the anomaly exists
     const existingAnomaly = getAnomalyById(id);
     if (!existingAnomaly) {
-      return NextResponse.json(
-        { error: 'Anomaly not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Anomaly not found' }, { status: 404 });
     }
-    
+
     // Check if already captured
     if (existingAnomaly.status === 'captured') {
-        return NextResponse.json(
-            { error: 'Anomaly already captured' },
-            { status: 400 }
-        );
+      return NextResponse.json(
+        { error: 'Anomaly already captured' },
+        { status: 400 }
+      );
     }
 
     // Simulate 30% error rate
@@ -38,7 +35,7 @@ export async function POST(_request: NextRequest) {
       return NextResponse.json(
         {
           error: 'Capture failed - anomaly escaped!',
-          message: 'The yokai has evaded capture and disappeared temporarily'
+          message: 'The yokai has evaded capture and disappeared temporarily',
         },
         { status: 500 }
       );
@@ -60,7 +57,7 @@ export async function POST(_request: NextRequest) {
       return NextResponse.json(
         {
           error: 'Validation error',
-          details: error.errors
+          details: error.errors,
         },
         { status: 400 }
       );
@@ -68,7 +65,7 @@ export async function POST(_request: NextRequest) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error'
+        error: 'Internal server error',
       },
       { status: 500 }
     );

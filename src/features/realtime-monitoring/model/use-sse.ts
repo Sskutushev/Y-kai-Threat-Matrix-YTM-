@@ -19,24 +19,23 @@ export const useAnomalySSE = () => {
           const validatedData = SseEventSchema.parse(eventData);
 
           // Update the specific anomaly in the query cache without refetching
-          queryClient.setQueryData<import('@/entities/anomaly/model/types').Anomaly[]>(
-            ['anomalies'],
-            (old) => {
-              if (!old) return old;
-              return old.map((anomaly) =>
-                anomaly.id === validatedData.id
-                  ? { ...anomaly, threatLevel: validatedData.threatLevel }
-                  : anomaly
-              );
-            }
-          );
+          queryClient.setQueryData<
+            import('@/entities/anomaly/model/types').Anomaly[]
+          >(['anomalies'], (old) => {
+            if (!old) return old;
+            return old.map((anomaly) =>
+              anomaly.id === validatedData.id
+                ? { ...anomaly, threatLevel: validatedData.threatLevel }
+                : anomaly
+            );
+          });
         }
-      } catch (error) {
+      } catch (_error) {
         // console.error('Error processing SSE event:', error);
       }
     };
 
-    eventSource.onerror = (error) => {
+    eventSource.onerror = (_error) => {
       // console.error('SSE connection error:', error);
       eventSource.close();
     };

@@ -1,15 +1,20 @@
-export const apiClient = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
+export const apiClient = async <T>(
+  endpoint: string,
+  options?: RequestInit
+): Promise<T> => {
   const response = await fetch(`${endpoint}`, {
+    ...options, // Spread other options first
     headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
+      'Content-Type': 'application/json', // Default header
+      ...options?.headers, // Override with provided headers (if any)
     },
-    ...options,
   });
 
   if (!response.ok) {
     const errorData: unknown = await response.json().catch(() => null);
-    const error = new Error(`API request failed: ${response.status} ${response.statusText}`) as Error & { status: number; data: unknown; name: string };
+    const error = new Error(
+      `API request failed: ${response.status} ${response.statusText}`
+    ) as Error & { status: number; data: unknown; name: string };
     error.status = response.status;
     error.data = errorData;
     error.name = 'ApiError';
