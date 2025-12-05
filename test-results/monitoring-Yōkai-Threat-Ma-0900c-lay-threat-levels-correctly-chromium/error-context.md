@@ -1,0 +1,60 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "Yōkai Threat Matrix" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Real-time spiritual anomaly monitoring
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - heading "Kitsune" [level=3] [ref=e9]
+          - generic [ref=e10]: high
+        - generic [ref=e11]:
+          - paragraph [ref=e12]: "Location: Shinjuku District"
+          - paragraph [ref=e13]: Fox spirit with multiple tails, capable of illusions and fire manipulation
+          - generic [ref=e14]: Status:Captured
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - heading "Tengu" [level=3] [ref=e17]
+          - generic [ref=e18]: low
+        - generic [ref=e19]:
+          - paragraph [ref=e20]: "Location: Mount Kurama"
+          - paragraph [ref=e21]: Crow-like yokai with supernatural abilities and martial arts skills
+          - generic [ref=e22]: Status:Active
+        - button "Capture Yōkai" [ref=e24] [cursor=pointer]
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - heading "Kappa" [level=3] [ref=e27]
+          - generic [ref=e28]: critical
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: "Location: Rivers of Saitama"
+          - paragraph [ref=e31]: Water-dwelling creature known for mischief and dangerous strength
+          - generic [ref=e32]: Status:Active
+        - button "Capture Yōkai" [ref=e34] [cursor=pointer]
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - heading "Oni" [level=3] [ref=e37]
+          - generic [ref=e38]: critical
+        - generic [ref=e39]:
+          - paragraph [ref=e40]: "Location: Nearby Mountains"
+          - paragraph [ref=e41]: Demon with horns and incredible strength, very dangerous
+          - generic [ref=e42]: Status:Active
+        - button "Capture Yōkai" [ref=e44] [cursor=pointer]
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - heading "Yuki-onna" [level=3] [ref=e47]
+          - generic [ref=e48]: medium
+        - generic [ref=e49]:
+          - paragraph [ref=e50]: "Location: Snowy Mountains"
+          - paragraph [ref=e51]: Ghostly woman of the snow who appears during blizzards
+          - generic [ref=e52]: Status:Active
+        - button "Capture Yōkai" [ref=e54] [cursor=pointer]
+  - generic [ref=e55]:
+    - img [ref=e57]
+    - button "Open Tanstack query devtools" [ref=e105] [cursor=pointer]:
+      - img [ref=e106]
+  - button "Open Next.js Dev Tools" [ref=e159] [cursor=pointer]:
+    - img [ref=e160]
+  - alert [ref=e163]
+```

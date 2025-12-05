@@ -1,0 +1,49 @@
+@import '@/shared/styles/variables.scss';
+
+// Threat Badge Mixin
+@mixin threat-badge($color) {
+  background: rgba($color, 0.1);
+  color: $color;
+  border: 1px solid rgba($color, 0.3);
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-base;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Card Mixin
+@mixin card-base {
+  background: $color-bg-secondary;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-lg;
+  transition: all $transition-base;
+}
+
+// Button Reset
+@mixin button-reset {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+// Flex Center
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Truncate Text
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

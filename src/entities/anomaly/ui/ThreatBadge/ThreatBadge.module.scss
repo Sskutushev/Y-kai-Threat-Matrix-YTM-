@@ -1,0 +1,22 @@
+@import '@/shared/styles/variables.scss';
+@import '@/shared/styles/mixins.scss';
+
+.threatBadge {
+  @include threat-badge($color-text-muted); // Default color
+
+  &.low {
+    @include threat-badge($color-threat-low);
+  }
+
+  &.medium {
+    @include threat-badge($color-threat-medium);
+  }
+
+  &.high {
+    @include threat-badge($color-threat-high);
+  }
+
+  &.critical {
+    @include threat-badge($color-threat-critical);
+  }
+}

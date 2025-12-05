@@ -1,0 +1,96 @@
+@import '@/shared/styles/variables.scss';
+@import '@/shared/styles/mixins.scss';
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  border: none;
+  border-radius: $border-radius-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-base;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+// Variants
+.primary {
+  background: $color-primary;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: darken($color-primary, 10%);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active:not(:disabled) {
+    background: darken($color-primary, 15%);
+  }
+}
+
+.secondary {
+  background: $color-bg-tertiary;
+  color: $color-text-primary;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  &:hover:not(:disabled) {
+    background: lighten($color-bg-tertiary, 5%);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.danger {
+  background: $color-danger;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: darken($color-danger, 10%);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active:not(:disabled) {
+    background: darken($color-danger, 15%);
+  }
+}
+
+// Sizes
+.sm {
+  padding: $spacing-xs $spacing-sm;
+  font-size: $font-size-sm;
+}
+
+.md {
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-base;
+}
+
+.lg {
+  padding: $spacing-md $spacing-lg;
+  font-size: $font-size-lg;
+}
+
+// Modifiers
+.fullWidth {
+  width: 100%;
+}
+
+.loading {
+  position: relative;
+  color: transparent;
+
+  & > :global(*) {
+    color: transparent;
+  }
+}

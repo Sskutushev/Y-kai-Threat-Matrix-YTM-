@@ -1,0 +1,82 @@
+@import '@/shared/styles/variables.scss';
+@import '@/shared/styles/mixins.scss';
+
+.anomalyCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+  transition: all $transition-base;
+
+  &.active {
+    border-left: 4px solid $color-threat-critical;
+  }
+
+  &.captured {
+    opacity: 0.7;
+    border-left: 4px solid $color-success;
+
+    .name {
+      text-decoration: line-through;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-md;
+
+    .name {
+      font-size: $font-size-xl;
+      font-weight: 600;
+      color: $color-text-primary;
+      margin: 0;
+    }
+  }
+
+  .content {
+    flex: 1;
+
+    .label {
+      font-weight: 600;
+      color: $color-text-secondary;
+    }
+
+    .location {
+      margin: $spacing-sm 0;
+      color: $color-text-primary;
+    }
+
+    .description {
+      margin: $spacing-sm 0;
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+    }
+
+    .status {
+      margin-top: $spacing-md;
+
+      .statusText {
+        margin-left: $spacing-sm;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-base;
+
+        &.active {
+          background: rgba($color-warning, 0.2);
+          color: $color-warning;
+        }
+
+        &.captured {
+          background: rgba($color-success, 0.2);
+          color: $color-success;
+        }
+      }
+    }
+  }
+
+  .actions {
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

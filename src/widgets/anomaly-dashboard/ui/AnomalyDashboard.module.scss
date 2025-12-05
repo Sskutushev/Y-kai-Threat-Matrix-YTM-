@@ -1,0 +1,44 @@
+@import '@/shared/styles/variables.scss';
+@import '@/shared/styles/mixins.scss';
+
+.dashboard {
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+
+  .title {
+    font-size: $font-size-3xl;
+    font-weight: 700;
+    margin-bottom: $spacing-sm;
+    text-align: center;
+    color: $color-text-primary;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-xl;
+    font-size: $font-size-lg;
+  }
+
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-2xl;
+
+    p {
+      margin-top: $spacing-md;
+      color: $color-text-secondary;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: $spacing-lg;
+    width: 100%;
+  }
+}
