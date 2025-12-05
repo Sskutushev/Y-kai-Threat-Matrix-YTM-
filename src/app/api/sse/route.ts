@@ -12,6 +12,8 @@ const SseEventSchema = z.object({
 });
 
 export async function GET(_request: NextRequest) {
+  let intervalId: NodeJS.Timeout | undefined; // Declare in a higher scope
+
   // Create a readable stream for SSE
   const stream = new ReadableStream({
     start(controller) {
@@ -23,7 +25,7 @@ export async function GET(_request: NextRequest) {
       );
 
       // Set up interval to send random threat level updates every 5 seconds
-      const _interval = setInterval(() => {
+      intervalId = setInterval(() => {
         try {
           // Get a random active anomaly
           const anomaly = getRandomActiveAnomaly();
@@ -87,7 +89,9 @@ export async function GET(_request: NextRequest) {
 
     cancel() {
       // console.log('SSE stream cancelled'); // Commented out to suppress no-console warning
-      clearInterval(_interval);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     },
   });
 
