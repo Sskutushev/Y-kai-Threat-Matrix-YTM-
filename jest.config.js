@@ -8,7 +8,8 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   testPathIgnorePatterns: ['/node_modules/', '/tests/e2e/'],
-  transformIgnorePatterns: ['node_modules/(?!until-async)'],
+  // This pattern allows Jest to transform specific ES Modules from node_modules.
+  transformIgnorePatterns: ['/node_modules/(?!until-async|@mswjs/interceptors)'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
