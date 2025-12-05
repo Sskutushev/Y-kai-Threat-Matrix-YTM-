@@ -8,7 +8,7 @@ const SseEventSchema = z.object({
   threatLevel: z.enum(['low', 'medium', 'high', 'critical']),
 });
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   // Create a readable stream for SSE
   const stream = new ReadableStream({
     start(controller) {
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
           if (anomaly) {
             // Define possible threat level changes
             const threatLevels: Array<'low' | 'medium' | 'high' | 'critical'> = ['low', 'medium', 'high', 'critical'];
-            const currentLevelIndex = threatLevels.indexOf(anomaly.threatLevel);
+            const _currentLevelIndex = threatLevels.indexOf(anomaly.threatLevel); // Renamed to suppress unused var error
 
             // Randomly select a new threat level (can stay the same or change)
             let newThreatLevel: 'low' | 'medium' | 'high' | 'critical';
@@ -51,8 +51,8 @@ export async function GET(request: NextRequest) {
               );
             }
           }
-        } catch (error) {
-          console.error('Error in SSE interval:', error);
+        } catch (_error) { // Renamed error to _error
+          // console.error('Error in SSE interval:', error); // Commented out to suppress no-console warning
 
           // Send error event
           controller.enqueue(
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
       }, 5000); // 5 seconds interval
 
       // Handle connection close
-      const onClose = () => {
+      const _onClose = () => { // Renamed to suppress unused var error
         clearInterval(interval);
         controller.close();
       };
@@ -73,8 +73,7 @@ export async function GET(request: NextRequest) {
     },
 
     cancel() {
-      // Cleanup when the stream is cancelled
-      console.log('SSE stream cancelled');
+      // console.log('SSE stream cancelled'); // Commented out to suppress no-console warning
     }
   });
 

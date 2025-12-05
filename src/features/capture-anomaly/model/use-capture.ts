@@ -54,18 +54,23 @@ export const useCaptureMutation = () => {
       // Return context for rollback
       return { previousAnomalies };
     },
-    onError: (err, { id }, context) => {
+    onError: (err, { id: _id }, context) => { // Renamed 'id' to '_id'
       // 1. Rollback to previous data
       if (context?.previousAnomalies) {
         queryClient.setQueryData(['anomalies'], context.previousAnomalies);
       }
 
       // 2. Show error toast
-      const error = err as any;
-      const errorMessage = error?.name === 'ApiError'
-        ? error.data?.message || error.message
-        : 'Failed to capture the yokai';
+      let errorMessage = 'Failed to capture the yokai';
 
+      if (err instanceof Error) {
+        const typedError = err as Error & { status?: number; data?: unknown; name?: string };
+        if (typedError.name === 'ApiError') {
+          errorMessage = typedError.data?.message || typedError.message;
+        } else {
+          errorMessage = typedError.message;
+        }
+      }
       toast.error(errorMessage);
     },
     onSuccess: (data) => {

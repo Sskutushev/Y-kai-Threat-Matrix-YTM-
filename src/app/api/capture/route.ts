@@ -7,7 +7,7 @@ const CaptureRequestSchema = z.object({
   id: z.string().min(1, 'Anomaly ID is required'),
 });
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 800));

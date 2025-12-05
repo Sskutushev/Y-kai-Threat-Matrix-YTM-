@@ -15,7 +15,7 @@ const AnomaliesResponseSchema = z.array(
   })
 );
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const anomalies = getAllAnomalies();
 
@@ -35,15 +35,17 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const apiError = error as any;
-    if (apiError?.name === 'ApiError') {
-      return NextResponse.json(
-        {
-          error: apiError.message,
-          status: apiError.status
-        },
-        { status: apiError.status }
-      );
+    if (error instanceof Error) {
+      const typedError = error as Error & { status?: number; data?: unknown; name?: string };
+      if (typedError.name === 'ApiError' && typedError.status) {
+        return NextResponse.json(
+          {
+            error: typedError.message,
+            status: typedError.status
+          },
+          { status: typedError.status }
+        );
+      }
     }
 
     return NextResponse.json(
