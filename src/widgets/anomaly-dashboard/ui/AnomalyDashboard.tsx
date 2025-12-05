@@ -47,7 +47,7 @@ export const AnomalyDashboard = () => {
     <div className={styles.dashboard}>
       <h1 className={styles.title}>Yōkai Threat Matrix</h1>
       <p className={styles.subtitle}>Real-time spiritual anomaly monitoring</p>
-      
+
       <div className={styles.grid}>
         {anomalies.map((anomaly: Anomaly) => (
           <AnomalyCard
@@ -55,7 +55,10 @@ export const AnomalyDashboard = () => {
             anomaly={anomaly}
             actions={
               anomaly.status === 'active' && (
-                <CaptureButton anomalyId={anomaly.id} disabled={anomaly.status === 'captured'} />
+                <CaptureButton
+                  anomalyId={anomaly.id}
+                  disabled={anomaly.status !== 'active'}
+                />
               )
             }
           />
