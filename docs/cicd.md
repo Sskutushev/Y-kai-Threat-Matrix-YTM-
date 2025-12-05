@@ -1,54 +1,46 @@
 # CI/CD and Deployment
 
-This document outlines the Continuous Integration (CI) and Continuous Deployment (CD) pipeline for the Yōkai Threat Matrix project. The primary goal of the pipeline is to automate quality assurance and ensure stable, consistent deployments.
+This document outlines the Continuous Integration (CI) and Continuous Deployment (CD) pipeline for the Yokai Threat Matrix project. The main goal is to automate quality checks and ensure stable deployments.
 
 ## CI/CD Provider: GitHub Actions
 
-The entire CI/CD process is managed through a GitHub Actions workflow defined in `.github/workflows/ci-cd.yml`.
+The CI/CD process uses a GitHub Actions workflow defined in `.github/workflows/ci-cd.yml`.
 
 ### Workflow Triggers
 
-The workflow is automatically triggered by the following events:
-*   A `push` to the `main` or `develop` branches.
-*   A `pull_request` targeting the `main` branch.
+The workflow runs automatically when:
+*   Code is `pushed` to `master` or `develop` branches.
+*   A `pull request` is made targeting the `master` branch.
 
 ### Pipeline Jobs
 
-The workflow consists of three sequential jobs that act as quality gates. Each job must pass for the pipeline to proceed to the next.
+The workflow has two main jobs that act as quality gates. Both must pass for the pipeline to succeed.
 
 1.  **`test` (Test & Lint)**
-    *   **Purpose**: To validate code quality and correctness.
-    *   **Actions**:
-        *   Installs dependencies using `npm ci` for fast, reliable builds.
-        *   Runs the ESLint static analyzer (`npm run lint`).
-        *   Executes all Jest unit and integration tests (`npm test`).
-        *   Builds the application (`npm run build`) to detect any build-time errors.
+    *   **Purpose**: Checks code quality and correctness.
+    *   **Steps**:
+        *   Installs dependencies (`npm ci`).
+        *   Runs ESLint (`npm run lint`).
+        *   Executes Jest unit and integration tests (`npm test`).
+        *   Builds the application (`npm run build`) to find build errors.
 
 2.  **`e2e` (End-to-End Tests)**
-    *   **Purpose**: To verify critical user flows in a real browser environment.
-    *   **Dependency**: This job only runs if the `test` job completes successfully.
-    *   **Actions**:
-        *   Installs Playwright browser binaries.
-        *   Runs the full suite of E2E tests (`npm run test:e2e`).
-        *   Uploads the Playwright test report as a workflow artifact for inspection.
+    *   **Purpose**: Verifies important user flows in a real browser.
+    *   **Requirement**: Runs only if the `test` job is successful.
+    *   **Steps**:
+        *   Installs Playwright browser tools.
+        *   Runs all E2E tests (`npm run test:e2e`).
+        *   Uploads the Playwright test report as an artifact.
 
-3.  **`deploy` (Deploy to Production)**
-    *   **Purpose**: To deploy the application to the production environment.
-    *   **Condition**: This job only runs on a `push` to the `main` branch and if both the `test` and `e2e` jobs have passed.
-    *   **Actions**:
-        *   Uses the official Vercel GitHub Action to deploy the application.
-        *   Requires `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` to be configured as secrets in the GitHub repository.
+## Local Development Quality Checks
 
-## Local Development Quality Gates
+To maintain code quality before it reaches CI, **Husky** git hooks are used:
 
-To maintain code quality before it reaches the CI pipeline, several local development tools are enforced via **Husky** git hooks.
+*   **`pre-commit`**: Before a commit, this hook runs `lint-staged`. It checks and formats staged files, and runs relevant unit tests.
+*   **`commit-msg`**: This hook ensures commit messages follow **Conventional Commits** rules for a clear Git history.
 
-*   **`pre-commit`**: Before a commit is created, this hook runs `lint-staged`. This automatically lints, formats, and runs relevant unit tests on only the files that have been staged for the commit. This prevents broken or poorly formatted code from entering the repository.
-
-*   **`commit-msg`**: This hook validates that the commit message adheres to the **Conventional Commits** specification. This ensures a clean, readable, and automated-friendly git history.
-
-## Deployment Environment
+## Deployment
 
 The application is deployed to **Vercel**.
-*   **Production**: The `main` branch is automatically deployed to the production environment.
-*   **Preview**: Vercel automatically generates preview deployments for all pull requests, allowing for easy review of changes before they are merged.
+*   **Production**: The `master` branch is automatically deployed to production.
+*   **Preview**: Vercel creates preview deployments for all pull requests, allowing easy review of changes.

@@ -1,47 +1,47 @@
 # Application Architecture
 
-This document provides a high-level overview of the architectural design of the Yōkai Threat Matrix application.
+This document provides a high-level overview of the Yokai Threat Matrix application's architectural design.
 
-## Core Philosophy: Feature-Sliced Design (FSD)
+## Core Principle: Feature-Sliced Design (FSD)
 
-The project is built upon the principles of **Feature-Sliced Design (FSD)**, a methodology for structuring web applications to enhance scalability, maintainability, and developer experience. FSD organizes the codebase by business domains (slices) rather than technical concerns (e.g., "components", "hooks").
+The project uses **Feature-Sliced Design (FSD)** to structure the application. FSD helps improve scalability, maintainability, and the developer experience by organizing code around business domains rather than technical types.
 
 ### Layered Structure
 
-The architecture is composed of distinct layers, each with a specific responsibility. A strict dependency rule is enforced: a layer can only depend on layers below it.
+The architecture has clear layers, each with a specific role. A layer can only use features from layers below it.
 
-1.  **`pages`**: The top-most layer, responsible for composing UI layouts for specific application routes. It assembles components from the layers below.
-2.  **`widgets`**: Complex, standalone UI components that provide significant user value (e.g., the main `AnomalyDashboard`). They combine features and entities into a single block.
-3.  **`features`**: Implements user-facing functionality and business scenarios, such as capturing an anomaly or handling real-time updates.
-4.  **`entities`**: Represents core business objects of the application (e.g., an `Anomaly`). This layer includes data structures, data-fetching logic, and UI components that represent the entity.
-5.  **`shared`**: The foundational layer containing code that is universally reusable across the application. This includes the UI kit (buttons, cards), API clients, utility functions, and global style definitions.
+1.  **`pages`**: The highest layer, building UI layouts for specific app routes by combining components from lower layers.
+2.  **`widgets`**: Complex, self-contained UI components that offer significant user functionality (e.g., the `AnomalyDashboard`). They combine features and entities.
+3.  **`features`**: Implements user actions and business tasks, such as capturing an anomaly or handling real-time data.
+4.  **`entities`**: Represents the main business objects (e.g., an `Anomaly`). This includes data structures, data loading, and UI parts for the entity.
+5.  **`shared`**: The base layer with code reusable across the application. This includes UI components (buttons, cards), API clients, utility functions, and global styles.
 
-This layered approach prevents circular dependencies and ensures a predictable, one-way data flow.
+This layered approach prevents unwanted dependencies and ensures a predictable data flow.
 
 ## Technology & Data Flow
 
 ### State Management
 
-*   **Server State**: **TanStack Query (React Query v5)** is the primary tool for managing server state. It handles all data fetching, caching, and synchronization, including background refetching and request deduplication.
-*   **Optimistic Updates**: For critical user actions like "capturing" an anomaly, the UI is updated instantly before receiving server confirmation. The state is automatically rolled back if the server returns an error, providing a seamless user experience.
-*   **Real-Time State**: Live updates are managed via **Server-Sent Events (SSE)**. A custom hook (`useAnomalySSE`) subscribes to the SSE stream and directly injects updates into the TanStack Query cache, ensuring efficient, targeted re-renders without full page reloads.
+*   **Server State**: **TanStack Query (React Query v5)** manages server data. It handles data fetching, caching, and syncing, including background updates.
+*   **Optimistic Updates**: For actions like "capturing" an anomaly, the UI updates instantly before server confirmation. If an error occurs, the UI reverts automatically.
+*   **Real-Time State**: **Server-Sent Events (SSE)** provide live updates. A special hook (`useAnomalySSE`) receives SSE data and updates the TanStack Query cache, leading to efficient UI changes.
 
-### Styling Architecture
+### Styling
 
-The project uses a pure **SCSS Module** approach for styling.
-*   **Component Scoping**: Every component has its own `.module.scss` file, ensuring styles are locally scoped and do not leak.
-*   **Global Variables & Mixins**: A shared `styles` directory contains global SCSS variables (for colors, spacing, etc.) and reusable mixins, ensuring a consistent design system.
-*   **No Utility-First Frameworks**: The styling is implemented from the ground up without relying on frameworks like Tailwind CSS.
+The project uses **SCSS Modules**.
+*   **Component Styling**: Each component has its own `.module.scss` file, keeping styles local.
+*   **Global Styles**: A `shared/styles` folder contains global SCSS variables (for colors, spacing) and reusable mixins for consistent design.
+*   **No Frameworks**: Styling is custom-made without frameworks like Tailwind CSS.
 
 ### API & Data Handling
 
-*   **API Endpoints**: The backend is implemented using **Next.js API Routes** located within the `src/app/api/` directory.
-*   **Mock Database**: For development and testing, an in-memory database is used. It is attached to the `global` object in Node.js to persist its state across hot reloads.
-*   **Data Validation**: **Zod** is used to define validation schemas for all incoming and outgoing data. This ensures runtime type safety at the API boundary and provides a single source of truth for data structures, from which TypeScript types are inferred.
+*   **API Endpoints**: Next.js API Routes handle the backend, located in `src/app/api/`.
+*   **Mock Database**: An in-memory database, stored globally, is used for development and testing. It keeps its state during hot reloads.
+*   **Data Validation**: **Zod** defines validation rules for all incoming and outgoing data, ensuring type safety and consistent data structures.
 
-## Key Architectural Decisions
+## Key Architectural Choices
 
-*   **FSD for Maintainability**: Chosen to manage complexity as the application grows and to provide a clear, scalable structure.
-*   **TanStack Query for Server State**: Selected for its powerful caching capabilities and features like optimistic updates, which are central to the application's UX.
-*   **Server-Sent Events over WebSockets**: SSE was chosen for its simplicity and efficiency for the one-way, server-to-client data flow required for live threat updates.
-*   **Strict Validation with Zod**: Ensures data integrity throughout the application, from the API layer to the UI, reducing runtime errors.
+*   **FSD**: Chosen for a clear, scalable structure that helps with app growth and maintenance.
+*   **TanStack Query**: Selected for its strong caching and optimistic update features, crucial for the user experience.
+*   **Server-Sent Events**: Picked for its simplicity and efficiency for one-way, real-time data flow.
+*   **Zod Validation**: Ensures data quality across the application, reducing errors.
