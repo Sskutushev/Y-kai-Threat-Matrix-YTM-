@@ -56,8 +56,8 @@ test.describe('Yōkai Threat Matrix Dashboard', () => {
     await expect(threatBadges).toHaveCount(12); // Based on our initial data
 
     // Verify that at least one threat level is visible
-    await expect(page.locator('text=high')).toBeVisible();
-    await expect(page.locator('text=medium')).toBeVisible();
-    await expect(page.locator('text=critical')).toBeVisible();
+    await expect(page.locator('text=high').first()).toBeVisible();
+    await expect(page.locator('text=medium').first()).toBeVisible();
+    await expect(page.locator('text=critical').first()).toBeVisible();
   });
 });
