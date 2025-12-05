@@ -23,7 +23,7 @@ export async function GET(_request: NextRequest) {
       );
 
       // Set up interval to send random threat level updates every 5 seconds
-      const interval = setInterval(() => {
+      const _interval = setInterval(() => {
         try {
           // Get a random active anomaly
           const anomaly = getRandomActiveAnomaly();
@@ -83,21 +83,11 @@ export async function GET(_request: NextRequest) {
           );
         }
       }, 5000); // 5 seconds interval
-
-      // Handle connection close
-      const _onClose = () => {
-        // Renamed to suppress unused var error
-        clearInterval(interval);
-        controller.close();
-      };
-
-      // Add event listener for connection close if possible
-      // Note: In Next.js App Router, there's no direct way to detect client disconnection
-      // The interval will continue until server-side timeout or process termination
-    },
+    }, // This closes the start(controller) function
 
     cancel() {
       // console.log('SSE stream cancelled'); // Commented out to suppress no-console warning
+      clearInterval(_interval);
     },
   });
 
